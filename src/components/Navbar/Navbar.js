@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Searchbar from "../Searchbar/Searchbar";
 import "./Navbar.css";
 
 function Navbar() {
@@ -8,6 +9,7 @@ function Navbar() {
         <Link to="/" className="brand">
           <h2>Cooking App</h2>
         </Link>
+        <Searchbar />
         <Link to="/create">Create Recipe</Link>
       </nav>
     </div>
