@@ -16,7 +16,14 @@ export const useFetch = (url, method = "GET") => {
       body: JSON.stringify(postData),
     });
   };
-
+  const deleteData = () => {
+    setOptions({
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  };
   useEffect(() => {
     const controller = new AbortController();
 
@@ -50,12 +57,13 @@ export const useFetch = (url, method = "GET") => {
       fetchData();
     } else if (method === "POST" && options) {
       fetchData(options);
+    } else if (method === "DELETE" && options) {
+      fetchData(options);
     }
-
     return () => {
       controller.abort();
     };
   }, [url, method, options]);
 
-  return { data, isPending, error, postData };
+  return { data, isPending, error, postData, deleteData };
 };

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch";
+import { projectFireStore } from "../../firebase/config";
+
 import "./Create.css";
 function Create() {
   const [title, setTitle] = useState("");
@@ -10,22 +11,24 @@ function Create() {
   const [ingredients, setIngredients] = useState([]);
 
   const navigate = useNavigate();
-
-  const { postData, data, isPending } = useFetch(
-    "http://localhost:3000/recipes",
-    "POST"
-  );
-
   const ingredientInput = useRef(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postData({
+    const doc = {
       title,
       ingredients,
       method,
       cookingTime: cookingTime + " minutes",
-    });
+    };
+
+    try {
+      await projectFireStore.collection("recipes").add(doc);
+      //TODO: Redirect to Home Page when user added recipe
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleAdd = (e) => {
@@ -37,14 +40,6 @@ function Create() {
     setNewIngredient("");
     ingredientInput.current.focus();
   };
-
-  //TODO: Redirect to Home Page when user added recipe
-  useEffect(() => {
-    if (data) {
-      // navigate("../success", { replace: true });
-      navigate("/", { replace: true });
-    }
-  }, data);
 
   return (
     <div className="create">
