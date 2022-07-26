@@ -27,3 +27,12 @@
 .recipe li:last-child::after {
   content: ".";
 }
+
+.recipe.dark {
+  background-color: #555;
+}
+.recipe.dark p,
+.recipe.dark h2,
+.recipe.dark li {
+  color: #e4e4e4;
+}
